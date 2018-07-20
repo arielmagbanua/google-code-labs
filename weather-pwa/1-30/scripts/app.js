@@ -48,7 +48,6 @@
    * Event listeners for UI elements
    *
    ****************************************************************************/
-
   /* Event listener for refresh button */
   document.getElementById('butRefresh').addEventListener('click', function() {
     app.updateForecasts();
@@ -83,7 +82,6 @@
    * Methods to update/refresh the UI
    *
    ****************************************************************************/
-
   // Toggles the visibility of the add new city dialog.
   app.toggleAddDialog = function(visible) {
     if (visible) {
@@ -97,6 +95,7 @@
   // doesn't already exist, it's cloned from the template.
   app.updateForecastCard = function(data) {
     var card = app.visibleCards[data.key];
+
     if (!card) {
       card = app.cardTemplate.cloneNode(true);
       card.classList.remove('cardTemplate');
@@ -105,38 +104,33 @@
       app.container.appendChild(card);
       app.visibleCards[data.key] = card;
     }
+
     card.querySelector('.description').textContent = data.currently.summary;
-    card.querySelector('.date').textContent =
-      new Date(data.currently.time * 1000);
+    card.querySelector('.date').textContent = new Date(data.currently.time * 1000);
     card.querySelector('.current .icon').classList.add(data.currently.icon);
-    card.querySelector('.current .temperature .value').textContent =
-      Math.round(data.currently.temperature);
-    card.querySelector('.current .feels-like .value').textContent =
-      Math.round(data.currently.apparentTemperature);
-    card.querySelector('.current .precip').textContent =
-      Math.round(data.currently.precipProbability * 100) + '%';
-    card.querySelector('.current .humidity').textContent =
-      Math.round(data.currently.humidity * 100) + '%';
-    card.querySelector('.current .wind .value').textContent =
-      Math.round(data.currently.windSpeed);
-    card.querySelector('.current .wind .direction').textContent =
-      data.currently.windBearing;
+    card.querySelector('.current .temperature .value').textContent = Math.round(data.currently.temperature);
+    card.querySelector('.current .feels-like .value').textContent = Math.round(data.currently.apparentTemperature);
+    card.querySelector('.current .precip').textContent = Math.round(data.currently.precipProbability * 100) + '%';
+    card.querySelector('.current .humidity').textContent = Math.round(data.currently.humidity * 100) + '%';
+    card.querySelector('.current .wind .value').textContent = Math.round(data.currently.windSpeed);
+    card.querySelector('.current .wind .direction').textContent = data.currently.windBearing;
     var nextDays = card.querySelectorAll('.future .oneday');
+
     var today = new Date();
     today = today.getDay();
+
     for (var i = 0; i < 7; i++) {
       var nextDay = nextDays[i];
       var daily = data.daily.data[i];
+
       if (daily && nextDay) {
-        nextDay.querySelector('.date').textContent =
-          app.daysOfWeek[(i + today) % 7];
+        nextDay.querySelector('.date').textContent = app.daysOfWeek[(i + today) % 7];
         nextDay.querySelector('.icon').classList.add(daily.icon);
-        nextDay.querySelector('.temp-high .value').textContent =
-          Math.round(daily.temperatureMax);
-        nextDay.querySelector('.temp-low .value').textContent =
-          Math.round(daily.temperatureMin);
+        nextDay.querySelector('.temp-high .value').textContent = Math.round(daily.temperatureMax);
+        nextDay.querySelector('.temp-low .value').textContent = Math.round(daily.temperatureMin);
       }
     }
+
     if (app.isLoading) {
       app.spinner.setAttribute('hidden', true);
       app.container.removeAttribute('hidden');
@@ -150,12 +144,12 @@
    * Methods for dealing with the model
    *
    ****************************************************************************/
-
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function(key, label) {
     var url = weatherAPIUrlBase + key + '.json';
     // Make the XHR to get the data, then update the card
     var request = new XMLHttpRequest();
+
     request.onreadystatechange = function() {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
@@ -166,6 +160,7 @@
         }
       }
     };
+
     request.open('GET', url);
     request.send();
   };
@@ -196,8 +191,7 @@
         ];
         app.saveSelectedCities();
       }
-    });    
+    });
   });
-
 
 })();

@@ -152,9 +152,12 @@
 
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function(key, label) {
+
     var url = weatherAPIUrlBase + key + '.json';
+
     // Make the XHR to get the data, then update the card
     var request = new XMLHttpRequest();
+
     request.onreadystatechange = function() {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
@@ -165,6 +168,7 @@
         }
       }
     };
+
     request.open('GET', url);
     request.send();
   };

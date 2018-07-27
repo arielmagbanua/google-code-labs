@@ -116,32 +116,25 @@
     dateElem.textContent = new Date(data.currently.time * 1000);
     card.querySelector('.description').textContent = data.currently.summary;
     card.querySelector('.current .icon').classList.add(data.currently.icon);
-    card.querySelector('.current .temperature .value').textContent =
-      Math.round(data.currently.temperature);
-    card.querySelector('.current .feels-like .value').textContent =
-      Math.round(data.currently.apparentTemperature);
-    card.querySelector('.current .precip').textContent =
-      Math.round(data.currently.precipProbability * 100) + '%';
-    card.querySelector('.current .humidity').textContent =
-      Math.round(data.currently.humidity * 100) + '%';
-    card.querySelector('.current .wind .value').textContent =
-      Math.round(data.currently.windSpeed);
-    card.querySelector('.current .wind .direction').textContent =
-      data.currently.windBearing;
+    card.querySelector('.current .temperature .value').textContent = Math.round(data.currently.temperature);
+    card.querySelector('.current .feels-like .value').textContent = Math.round(data.currently.apparentTemperature);
+    card.querySelector('.current .precip').textContent = Math.round(data.currently.precipProbability * 100) + '%';
+    card.querySelector('.current .humidity').textContent = Math.round(data.currently.humidity * 100) + '%';
+    card.querySelector('.current .wind .value').textContent = Math.round(data.currently.windSpeed);
+    card.querySelector('.current .wind .direction').textContent = data.currently.windBearing;
     var nextDays = card.querySelectorAll('.future .oneday');
     var today = new Date();
     today = today.getDay();
+
     for (var i = 0; i < 7; i++) {
       var nextDay = nextDays[i];
       var daily = data.daily.data[i];
+      
       if (daily && nextDay) {
-        nextDay.querySelector('.date').textContent =
-          app.daysOfWeek[(i + today) % 7];
+        nextDay.querySelector('.date').textContent = app.daysOfWeek[(i + today) % 7];
         nextDay.querySelector('.icon').classList.add(daily.icon);
-        nextDay.querySelector('.temp-high .value').textContent =
-          Math.round(daily.temperatureMax);
-        nextDay.querySelector('.temp-low .value').textContent =
-          Math.round(daily.temperatureMin);
+        nextDay.querySelector('.temp-high .value').textContent = Math.round(daily.temperatureMax);
+        nextDay.querySelector('.temp-low .value').textContent = Math.round(daily.temperatureMin);
       }
     }
     if (app.isLoading) {
@@ -218,9 +211,7 @@
   });
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-     .register('/service-worker.js')
-     .then(function() { 
+    navigator.serviceWorker.register('/service-worker.js').then(function() { 
         console.log('Service Worker Registered'); 
       });
   }

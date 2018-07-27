@@ -67,3 +67,8 @@ fastlane/readme.md
 # Webstorm
 /**/.idea/
 /**/.idea/*
+
+#node
+**/node_modules/
+**/**/node_modules/
+**/**/**/node_modules/

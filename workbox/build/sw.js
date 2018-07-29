@@ -38,9 +38,38 @@ if (workbox) {
   {
     "url": "images/icon/icon.svg",
     "revision": "d582b402cdafcc4a3934fba3986d1be7"
+  },
+  {
+    "url": "pages/offline.html",
+    "revision": "4a9a5105e6c974c6deec1c8893d00961"
+  },
+  {
+    "url": "pages/404.html",
+    "revision": "2f404c2bc9d919f3dcad5c8e570bc1bf"
   }
 ]);
 
+    const articleHandler = workbox.strategies.networkFirst({
+        cacheName: 'articles-cache',
+        plugins: [
+          new workbox.expiration.Plugin({
+            maxEntries: 50,
+          })
+        ]
+    });
+
+    workbox.routing.registerRoute(/(.*)article(.*)\.html/, args => {
+        return articleHandler.handle(args).then(response => {
+            if (!response) {
+              return caches.match('pages/offline.html');
+            } else if (response.status === 404) {
+              return caches.match('pages/404.html');
+            }
+            
+            return response;
+        });
+    });
+    
     workbox.routing.registerRoute(
         /(.*)articles(.*)\.(?:png|gif|jpg)/,
         workbox.strategies.cacheFirst({
